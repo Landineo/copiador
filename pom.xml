@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>media.portal.CopiarFotosComFilaTXT</mainClass>
+                            <mainClass>media.portal.Copiador</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
