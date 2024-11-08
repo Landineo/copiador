@@ -40,7 +40,7 @@ public class Copiador {
                     Path origemPath = Paths.get(diretorioDeOrigem, diretorioRelativoDoArquivo);
 
                     // Caminho do destino
-                    Path destinoPath = Paths.get(nomePastaDestino, faixaDeItens, diretorioRelativoDoArquivo);
+                    Path destinoPath = Paths.get(faixaDeItens, nomePastaDestino, diretorioRelativoDoArquivo);
 
                     // Cria os diretórios de destino, se não existirem
                     Files.createDirectories(destinoPath.getParent());
