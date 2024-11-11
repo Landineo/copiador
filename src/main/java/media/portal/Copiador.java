@@ -31,7 +31,7 @@ public class Copiador {
                     String idArquivo = parts[2].trim();
                     String nomePastaDestino = parts[3].trim();
                     String diretorioDeOrigem = parts[4].trim();
-                    String diretorioRelativoDoArquivo = parts[5].trim();
+                    String[] diretorioRelativoDoArquivo = parts[5].trim().split("/"); //adicionar um regex para separar retirar o diretorio relativo
 
                     // Classifica o grupo com base na quantidade de itens
                     String faixaDeItens = classificarFaixaDeItens(itensPorGrupo);
@@ -40,7 +40,7 @@ public class Copiador {
                     Path origemPath = Paths.get(diretorioDeOrigem, diretorioRelativoDoArquivo);
 
                     // Caminho do destino
-                    Path destinoPath = Paths.get(faixaDeItens, nomePastaDestino, diretorioRelativoDoArquivo);
+                    Path destinoPath = Paths.get(faixaDeItens, nomePastaDestino, diretorioRelativoDoArquivo[diretorioRelativoDoArquivo.length - 1].trim());
 
                     // Cria os diretórios de destino, se não existirem
                     Files.createDirectories(destinoPath.getParent());
