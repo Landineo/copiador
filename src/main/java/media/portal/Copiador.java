@@ -5,6 +5,10 @@ import java.nio.file.*;
 
 public class Copiador {
 
+    //Para utilizar somente a cópia de arquivos sem o sistema de limitação de itens não esqueça de
+    //comentar as linhas 64 à 70.
+    //Para utilizar o sistema de separação por faixa de itens, não esqueça de descomentar as variáveis na linha 57.
+
     public static void main(String[] args) {
 
         String jarDir = System.getProperty("user.dir");
@@ -14,14 +18,14 @@ public class Copiador {
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             String line;
 
-            // Contador de arquivos copiados para organizar a separação a cada 20.000 itens
+            // Contador de arquivos copiados para organizar a separação a cada x itens
             int contadorDeArquivos = 0;
             int numeroDoGrupo = 1;
 
             // Lê cada linha do arquivo
             while ((line = reader.readLine()) != null) {
                 // Ignora linhas em branco ou cabeçalho, se necessário
-                if (line.trim().isEmpty() || line.startsWith("idGrupo")) {
+                if (line.trim().isEmpty() || line.startsWith("grupo")) {
                     continue;
                 }
 
@@ -35,7 +39,8 @@ public class Copiador {
                     String idArquivo = parts[2].trim();
                     String nomePastaDestino = parts[3].trim();
                     String diretorioDeOrigem = parts[4].trim();
-                    String[] diretorioRelativoDoArquivo = parts[5].trim().split("/"); //adicionar um regex para separar retirar o diretorio relativo
+                    //adicionar um regex para separar retirar o diretorio relativo
+                    String[] diretorioRelativoDoArquivo = parts[5].trim().split("/");
 
                     // Classifica o grupo com base na quantidade de itens
                     String faixaDeItens = classificarFaixaDeItens(itensPorGrupo);
@@ -63,7 +68,7 @@ public class Copiador {
                         // Incrementa o contador de arquivos
                         contadorDeArquivos++;
 
-                        // Verifica se deve começar um novo grupo a cada 40.000 itens
+                        // Verifica se deve começar um novo grupo a cada x itens
                         if (contadorDeArquivos >= 40000) {
                             numeroDoGrupo++;
                             contadorDeArquivos = 0;  // Reinicia o contador para o próximo grupo
@@ -81,7 +86,7 @@ public class Copiador {
         }
     }
 
-    // Método para classificar a faixa de itens do grupo
+    // Classifica a faixa de itens do grupo
     private static String classificarFaixaDeItens(int itensPorGrupo) {
         if (itensPorGrupo >= 1 && itensPorGrupo <= 4) {
             return "1_4";
