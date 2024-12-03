@@ -14,6 +14,10 @@ public class Copiador {
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             String line;
 
+            // Contador de arquivos copiados para organizar a separação a cada 20.000 itens
+            int contadorDeArquivos = 0;
+            int numeroDoGrupo = 1;
+
             // Lê cada linha do arquivo
             while ((line = reader.readLine()) != null) {
                 // Ignora linhas em branco ou cabeçalho, se necessário
@@ -36,11 +40,16 @@ public class Copiador {
                     // Classifica o grupo com base na quantidade de itens
                     String faixaDeItens = classificarFaixaDeItens(itensPorGrupo);
 
+                    // Nome do diretório de destino baseado no número do grupo
+                    String pastaDestinoComGrupo = nomePastaDestino + "_grupo" + numeroDoGrupo;
+
                     // Caminho absoluto do arquivo de origem
                     Path origemPath = Paths.get(diretorioDeOrigem, diretorioRelativoDoArquivo);
 
-                    // Caminho do destino
-                    Path destinoPath = Paths.get(faixaDeItens, nomePastaDestino, diretorioRelativoDoArquivo[diretorioRelativoDoArquivo.length - 1].trim());
+                    // Caminho do destino, usando o nome da pasta com o número do grupo
+                    // para alterar para função anterior:
+                    // comentar a variavel pastaDestinoComGrupo e descomentar faixaDeItens, nomePastaDestino
+                    Path destinoPath = Paths.get(/*faixaDeItens, nomePastaDestino,*/ pastaDestinoComGrupo, diretorioRelativoDoArquivo[diretorioRelativoDoArquivo.length - 1].trim());
 
                     // Cria os diretórios de destino, se não existirem
                     Files.createDirectories(destinoPath.getParent());
@@ -50,6 +59,15 @@ public class Copiador {
                         // Copia o arquivo para o destino
                         Files.copy(origemPath, destinoPath, StandardCopyOption.REPLACE_EXISTING);
                         System.out.println("Arquivo copiado: " + origemPath + " para " + destinoPath);
+
+                        // Incrementa o contador de arquivos
+                        contadorDeArquivos++;
+
+                        // Verifica se deve começar um novo grupo a cada 40.000 itens
+                        if (contadorDeArquivos >= 40000) {
+                            numeroDoGrupo++;
+                            contadorDeArquivos = 0;  // Reinicia o contador para o próximo grupo
+                        }
                     } else {
                         System.err.println("Arquivo de origem não encontrado: " + origemPath);
                     }
